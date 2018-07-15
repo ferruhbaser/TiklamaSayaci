@@ -13,9 +13,10 @@ public class tiklamaSayaci extends javax.swing.JFrame {
     
     private int sayac;
     // 1000 ms = 1 second
-    private final long TOPLAM_SURE = 1000 * 30;
+    private final long TOPLAM_SURE = 1000 * 5;
     private long basZaman;
     private long gecenZaman;
+    private int kalanSure;
 
     /**
      * Creates new form tiklamaSayaci
@@ -26,6 +27,8 @@ public class tiklamaSayaci extends javax.swing.JFrame {
         sayac = 0;
         label.setText(String.valueOf(sayac));
         basZaman = -1;
+        kalanSure = 5;
+        kalanLabel.setText(String.valueOf(kalanSure));
     }
 
     /**
@@ -39,12 +42,20 @@ public class tiklamaSayaci extends javax.swing.JFrame {
 
         jButton1 = new javax.swing.JButton();
         label = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        kalanLabel = new javax.swing.JLabel();
+        yenidenBaslat = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Tıklama Sayacı (30 saniyede kaç kere)");
 
         jButton1.setFont(new java.awt.Font("Lucida Grande", 1, 36)); // NOI18N
         jButton1.setText("Tıkla");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -56,25 +67,61 @@ public class tiklamaSayaci extends javax.swing.JFrame {
         label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         label.setText("0");
 
+        jLabel1.setBackground(new java.awt.Color(51, 51, 255));
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 0, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel1.setText("Kalan Süre:");
+
+        kalanLabel.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        kalanLabel.setForeground(new java.awt.Color(204, 0, 51));
+        kalanLabel.setText("30");
+
+        yenidenBaslat.setFont(new java.awt.Font("Lucida Handwriting", 1, 18)); // NOI18N
+        yenidenBaslat.setForeground(new java.awt.Color(153, 153, 0));
+        yenidenBaslat.setText("Yeniden Başlat");
+        yenidenBaslat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yenidenBaslatActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addContainerGap()
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(kalanLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addComponent(yenidenBaslat)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                    .addComponent(label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(111, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(kalanLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 33, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(label, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(yenidenBaslat, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -82,22 +129,42 @@ public class tiklamaSayaci extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        
-        if (basZaman < 0)
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+       if (basZaman < 0)
         {
            basZaman = System.currentTimeMillis();
         } 
         
        
         sayac = sayac + 1;
+        
         label.setText(String.valueOf(sayac));
-         gecenZaman = System.currentTimeMillis() - basZaman;
+        gecenZaman = System.currentTimeMillis() - basZaman;
+         
+         kalanSure =5 - (int)gecenZaman / 1000;
+         kalanLabel.setText(String.valueOf(kalanSure));
          
          if (gecenZaman >= TOPLAM_SURE)
          {
              jButton1.setEnabled(false);
+             jButton1.setVisible(false);
          }
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void yenidenBaslatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yenidenBaslatActionPerformed
+        
+        kalanSure = 5;
+        jButton1.setVisible(true);
+        jButton1.setEnabled(true);
+        basZaman = -1;
+        sayac = 0;
+        kalanLabel.setText(String.valueOf(sayac));
+        label.setText(String.valueOf(sayac));
+    }//GEN-LAST:event_yenidenBaslatActionPerformed
 
     /**
      * @param args the command line arguments
@@ -136,6 +203,9 @@ public class tiklamaSayaci extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel kalanLabel;
     private javax.swing.JLabel label;
+    private javax.swing.JButton yenidenBaslat;
     // End of variables declaration//GEN-END:variables
 }
